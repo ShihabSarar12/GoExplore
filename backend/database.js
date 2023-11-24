@@ -10,19 +10,24 @@ const pool = mysql.createPool({
 }).promise();
 
 export const registerUser = async (userName, userEmail, userPassword) =>{
-    //TODO: have to fix dublicate userName entry by handling userID.
-    const [ result ] = await pool.query(`INSERT INTO users (userName, userEmail, userPassword) VALUES ( ?, ?, ? )`, [ userName, userEmail, userPassword ]);
-   const id = result.insertId;
-   return getUser(id);
+    const [ userExist ] = await pool.query(`SELECT * FROM users WHERE userName = ?`, [userName]);
+    console.log(userExist);
+    if(userExist.length !== 0){
+        console.log('User already exists!!');
+        return null;
+    }
+    const [ result ] = await pool.query(`INSERT INTO users (userName, userEmail, userPassword) VALUES ( ?, ?, ? );`, [ userName, userEmail, userPassword ]);
+    const id = result.insertId;
+    return getUser(id);
 }
 
 export const getUsers = async () =>{
-    const [ result, fields ] = await pool.query(`SELECT * FROM users`);
+    const [ result, fields ] = await pool.query(`SELECT * FROM users;`);
     return result;
 }
 
 export const getUser = async (userId) =>{
-    const [ result, fields ] = await pool.query(`SELECT * FROM users WHERE userID = ?`, [userId]);
+    const [ result, fields ] = await pool.query(`SELECT * FROM users WHERE userID = ?;`, [userId]);
     return result[0];
 }
 

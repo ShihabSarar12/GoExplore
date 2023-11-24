@@ -18,7 +18,13 @@ app.get('/users',async ( req, res ) =>{
 app.post('/users',async ( req, res ) =>{
     const { userName, userEmail, userPassword } = req.body;
     const user = await registerUser(userName, userEmail, userPassword);
-    res.status(201).send(user);
+    if(user){
+        res.status(201).send(user);
+    }
+    else{
+        res.status(423).send('User already exists!!');
+    }
+    
 });
 
 app.get('/user/:id',async ( req, res ) =>{
@@ -26,7 +32,7 @@ app.get('/user/:id',async ( req, res ) =>{
     const user = await getUser(id);
     res.status(200).send(user);
 });
-//TODO: have to hide server port using dotenv.
-app.listen(8080, () =>{
-    console.log('Server is running on ' + 8080);
+
+app.listen(process.env.SERVER_PORT, () =>{
+    console.log('Server is running on ' + process.env.SERVER_PORT);
 })
