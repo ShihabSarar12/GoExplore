@@ -5,7 +5,9 @@ import {
     getUser,
     registerUser,
     deleteUser,
-    updateUserInfo
+    updateUserInfo,
+    hashPassword,
+    validateLogin
 } from './database.js';
 
 const app = express();
@@ -23,7 +25,8 @@ app.get('/users',async ( req, res ) =>{
 
 app.post('/users',async ( req, res ) =>{
     const { userName, userEmail, userPassword } = req.body;
-    const user = await registerUser(userName, userEmail, userPassword);
+    const hash = await hashPassword(userPassword);
+    const user = await registerUser(userName, userEmail, hash);
     if(user){
         res.status(201).send(user);
         return;
@@ -46,21 +49,35 @@ app.delete('/user/:id', async ( req, res ) =>{
     const { success } = await deleteUser(id);
     console.log(success);
     if(success){
-        res.status(200).send('Deletion Successful');
+        res.status(200).send('Deletion Successful!!');
         return;
     }
-    res.status(423).send('Deletion Failed');
+    res.status(423).send('Deletion Failed!!');
 })
 
 app.patch('/user/:id', async ( req, res ) =>{
     const { id } = req.params;
     const { userName, userEmail, userPassword } = req.body;
-    const { success, user } = await updateUserInfo( id, userName, userEmail, userPassword );
+    const { success } = await updateUserInfo( id, userName, userEmail, userPassword );
     if(success){
-        res.status(200).send(user);
+        res.status(200).send('Update successful!!');
         return;
     }
-    res.status(423).send('Update failed');
+    res.status(423).send('Update failed!!');
+})
+
+app.post('/user/login', async ( req, res ) =>{
+    const { userName, userPassword } = req.body;
+    const { user, validate } = await validateLogin(userName, userPassword);
+    if(!user){
+        res.status(423).send('User doesn\'t exist!!');
+        return;
+    }
+    if(validate){
+        res.status(200).send('Welcome ' + user.userName);
+        return;
+    }
+    res.status(423).send('Password doesn\'t match!!');
 })
 
 app.listen(process.env.SERVER_PORT, () =>{
