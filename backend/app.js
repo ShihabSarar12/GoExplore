@@ -6,9 +6,9 @@ import {
     registerUser,
     deleteUser,
     updateUserInfo,
-    hashPassword,
     validateLogin
 } from './database.js';
+import { hashPassword } from './utilities.js';
 
 const app = express();
 app.use(cors());
@@ -19,14 +19,26 @@ app.get('/', ( req, res ) =>{
 });
 
 app.get('/users',async ( req, res ) =>{
-    const users = await getUsers();
+    const { users, error } = await getUsers();
+    if(error){
+        res.status(500).send('Error Occurred while fetching users');
+        return;
+    }
     res.status(200).send(users);
 });
 
 app.post('/users',async ( req, res ) =>{
     const { userName, userEmail, userPassword } = req.body;
+    if(!userName || !userPassword || !userPassword){
+        res.status(423).send('Please provide all the details');
+        return;
+    }
     const hash = await hashPassword(userPassword);
-    const user = await registerUser(userName, userEmail, hash);
+    const { user, error } = await registerUser(userName, userEmail, hash);
+    if(error){
+        res.status(500).send('Error Occurred while Registering Users');
+        return;
+    }
     if(user){
         res.status(201).send(user);
         return;
@@ -36,7 +48,15 @@ app.post('/users',async ( req, res ) =>{
 
 app.get('/user/:id',async ( req, res ) =>{
     const { id } = req.params;
-    const user = await getUser(id);
+    if(!parseInt(id)){
+        res.status(423).send('Enter a valid id');
+        return;
+    }
+    const { user, error } = await getUser(id);
+    if(error){
+        res.status(500).send('Error Occurred while Registering User');
+        return;
+    }
     if(user){
         res.status(200).send(user);
         return;
@@ -46,29 +66,56 @@ app.get('/user/:id',async ( req, res ) =>{
 
 app.delete('/user/:id', async ( req, res ) =>{
     const { id } = req.params;
-    const { success } = await deleteUser(id);
-    console.log(success);
+    if(!parseInt(id)){
+        res.status(423).send('Enter a valid id');
+        return;
+    }
+    const { success, error } = await deleteUser(id);
+    if(error){
+        res.status(500).send('Error Occurred while Deleting User');
+        return;
+    }
     if(success){
         res.status(200).send('Deletion Successful!!');
         return;
     }
     res.status(423).send('Deletion Failed!!');
-})
+});
 
 app.patch('/user/:id', async ( req, res ) =>{
     const { id } = req.params;
+    if(!parseInt(id)){
+        res.status(423).send('Enter a valid id');
+        return;
+    }
     const { userName, userEmail, userPassword } = req.body;
-    const { success } = await updateUserInfo( id, userName, userEmail, userPassword );
+    if(!userName || !userPassword || !userPassword){
+        res.status(423).send('Please provide all the details');
+        return;
+    }
+    const { success, error } = await updateUserInfo( id, userName, userEmail, userPassword );
+    if(error){
+        res.status(500).send('Error Occurred while Updating User Info');
+        return;
+    }
     if(success){
         res.status(200).send('Update successful!!');
         return;
     }
     res.status(423).send('Update failed!!');
-})
+});
 
 app.post('/user/login', async ( req, res ) =>{
     const { userName, userPassword } = req.body;
-    const { user, validate } = await validateLogin(userName, userPassword);
+    if(!userName || !userPassword){
+        res.status(423).send('Please provide all the details');
+        return;
+    }
+    const { user, validate, error } = await validateLogin(userName, userPassword);
+    if(error){
+        res.status(500).send('Error Occurred while Logging In');
+        return;
+    }
     if(!user){
         res.status(423).send('User doesn\'t exist!!');
         return;
@@ -78,9 +125,9 @@ app.post('/user/login', async ( req, res ) =>{
         return;
     }
     res.status(423).send('Password doesn\'t match!!');
-})
+});
 
 app.listen(process.env.SERVER_PORT, () =>{
     console.log('Server is running on ' + process.env.SERVER_PORT);
     console.log(`Listening on http://localhost:${process.env.SERVER_PORT}/`);
-})
+});
