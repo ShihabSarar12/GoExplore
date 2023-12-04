@@ -11,7 +11,31 @@ const pool = mysql.createPool({
 }).promise();
 
 export const initDB = async () =>{
-    //TODO: have to create database and tables when app runs!!
+    try{
+        const database = await pool.query(`CREATE DATABASE IF NOT EXISTS tour_app;`);
+        const [{ stateChanges }] = await pool.query(`USE tour_app`);
+        const { schema } = stateChanges;
+        const [{ affectedRows }] = await pool.query(`
+            CREATE TABLE IF NOT EXISTS tour (
+                tourId INT AUTO_INCREMENT PRIMARY KEY,
+                price FLOAT NOT NULL,
+                tourName VARCHAR(60) NOT NULL,
+                reviews FLOAT,
+                description VARCHAR(120),
+                duration INT NOT NULL
+            );
+        `);
+        //TODO: have to create other tables with specified relations
+        return {
+            data: schema,
+            error: null
+        }
+    } catch(error){
+        return {
+            data: null,
+            error: error.code
+        }
+    }
 }
 
 export const registerUser = async (userName, userEmail, userPassword) =>{

@@ -6,7 +6,8 @@ import {
     registerUser,
     deleteUser,
     updateUserInfo,
-    validateLogin
+    validateLogin,
+    initDB
 } from './database.js';
 import { hashPassword } from './utilities.js';
 
@@ -14,11 +15,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/', ( req, res ) =>{
-    res.send('Server is Running!!');
+app.get('/', async ( req, res ) =>{
+    const { data, error } = await initDB();
+    if(error && !data){
+        res.status(500).send(error + ' Unable to create database');
+        return;
+    }
+    res.status(200).send('database: ' + data);
 });
 
-app.get('/users',async ( req, res ) =>{
+app.get('/users', async ( req, res ) =>{
     const { users, error } = await getUsers();
     if(error){
         res.status(500).send(error + ': Error Occurred while fetching users');
