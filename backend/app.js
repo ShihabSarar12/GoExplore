@@ -21,7 +21,7 @@ app.get('/', ( req, res ) =>{
 app.get('/users',async ( req, res ) =>{
     const { users, error } = await getUsers();
     if(error){
-        res.status(500).send('Error Occurred while fetching users');
+        res.status(500).send(error + ': Error Occurred while fetching users');
         return;
     }
     res.status(200).send(users);
@@ -36,7 +36,7 @@ app.post('/users',async ( req, res ) =>{
     const hash = await hashPassword(userPassword);
     const { user, error } = await registerUser(userName, userEmail, hash);
     if(error){
-        res.status(500).send('Error Occurred while Registering Users');
+        res.status(500).send(error + ': Error Occurred while Registering Users');
         return;
     }
     if(user){
@@ -54,7 +54,7 @@ app.get('/user/:id',async ( req, res ) =>{
     }
     const { user, error } = await getUser(id);
     if(error){
-        res.status(500).send('Error Occurred while Registering User');
+        res.status(500).send(error + ': Error Occurred while Registering User');
         return;
     }
     if(user){
@@ -72,7 +72,7 @@ app.delete('/user/:id', async ( req, res ) =>{
     }
     const { success, error } = await deleteUser(id);
     if(error){
-        res.status(500).send('Error Occurred while Deleting User');
+        res.status(500).send(error + ': Error Occurred while Deleting User');
         return;
     }
     if(success){
@@ -95,7 +95,7 @@ app.patch('/user/:id', async ( req, res ) =>{
     }
     const { success, error } = await updateUserInfo( id, userName, userEmail, userPassword );
     if(error){
-        res.status(500).send('Error Occurred while Updating User Info');
+        res.status(500).send(error + ': Error Occurred while Updating User Info');
         return;
     }
     if(success){
@@ -113,7 +113,7 @@ app.post('/user/login', async ( req, res ) =>{
     }
     const { user, validate, error } = await validateLogin(userName, userPassword);
     if(error){
-        res.status(500).send('Error Occurred while Logging In');
+        res.status(500).send(error + ': Error Occurred while Logging In');
         return;
     }
     if(!user){

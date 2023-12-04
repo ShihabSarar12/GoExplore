@@ -2,7 +2,6 @@ import mysql from 'mysql2';
 import dotenv from 'dotenv';
 import { hashMatch } from './utilities.js';
 
-//TODO: have to handle specific connection errors.
 dotenv.config();
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -11,6 +10,9 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DB
 }).promise();
 
+export const initDB = async () =>{
+    //TODO: have to create database and tables when app runs!!
+}
 
 export const registerUser = async (userName, userEmail, userPassword) =>{
     try{
@@ -19,7 +21,7 @@ export const registerUser = async (userName, userEmail, userPassword) =>{
         if(userExist.length !== 0){
             return {
                 user: null,
-                error: false
+                error: null
             };
         }
         const [ result ] = await pool.query(`INSERT INTO users (userName, userEmail, userPassword) VALUES ( ?, ?, ? );`, [ userName, userEmail, userPassword ]);
@@ -28,12 +30,12 @@ export const registerUser = async (userName, userEmail, userPassword) =>{
         const { user } = await getUser(insertId);
         return {
             user,
-            error: false
+            error: null
         };
     } catch(error) {
-        if(error.code === 'ECONNREFUSED') return {
+        return {
             user: null,
-            error: true
+            error: error.code
         }
     }
 }
@@ -43,12 +45,12 @@ export const getUsers = async () =>{
         const [ result ] = await pool.query(`SELECT * FROM users;`);
         return {
             users: result,
-            error: false
+            error: null
         };
     } catch(error) {
-        if(error.code === 'ECONNREFUSED') return {
+        return {
             users: null,
-            error: true
+            error: error.code
         }
     }
 }
@@ -59,17 +61,17 @@ export const getUser = async (userId) =>{
         if(result.length === 0){
             return {
                 user: null,
-                error: false
+                error: null
             };
         }
         return {
             user: result[0],
-            error: false
+            error: null
         };
     } catch(error){
-        if(error.code === 'ECONNREFUSED') return {
+        return {
             user: null,
-            error: true
+            error: error.code
         }
     }
 }
@@ -80,17 +82,17 @@ export const deleteUser = async (userId) =>{
         if(affectedRows > 0){
             return {
                 success: true,
-                error: false
+                error: null
             };
         }
         return {
             success: false,
-            error: false
+            error: null
         };
     } catch(error){
-        if(error.code === 'ECONNREFUSED') return {
+        return {
             success: false,
-            error: true
+            error: error.code
         }
     }
 }
@@ -101,17 +103,17 @@ export const updateUserInfo = async (userId, userName, userEmail, userPassword) 
         if(affectedRows > 0){
             return {
                 success: true,
-                error: false
+                error: null
             };
         }
         return {
             success: false,
-            error: false
+            error: null
         }
     } catch(error){
-        if(error.code === 'ECONNREFUSED') return {
+        return {
             success: false,
-            error: true
+            error: error.code
         }
     }
 }
@@ -123,7 +125,7 @@ export const validateLogin = async (userName, loginPassword) =>{
             return {
                 user: null,
                 validate: false,
-                error: false
+                error: null
             };
         }
         const user = result[0];
@@ -132,13 +134,13 @@ export const validateLogin = async (userName, loginPassword) =>{
         return {
             user,
             validate,
-            error: false
+            error: null
         };
     } catch(error){
-        if(error.code === 'ECONNREFUSED') return {
+        return {
             user: null,
             validate: false,
-            error: true
+            error: error.code
         }
     }
 }
