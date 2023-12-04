@@ -49,7 +49,7 @@ app.post('/users',async ( req, res ) =>{
         res.status(201).send(user);
         return;
     }
-    res.status(423).send('User already exists!!');
+    res.status(423).send('User already exists by this partial credentials!!');
 });
 
 app.get('/user/:id',async ( req, res ) =>{

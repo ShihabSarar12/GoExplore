@@ -15,9 +15,9 @@ export const initDB = async () =>{
         const database = await pool.query(`CREATE DATABASE IF NOT EXISTS tour_app;`);
         const [{ stateChanges }] = await pool.query(`USE tour_app`);
         const { schema } = stateChanges;
-        const [{ affectedRows }] = await pool.query(`
-            CREATE TABLE IF NOT EXISTS tour (
-                tourId INT AUTO_INCREMENT PRIMARY KEY,
+        const tourTable = await pool.query(`
+            CREATE TABLE IF NOT EXISTS tours (
+                tourId BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
                 price FLOAT NOT NULL,
                 tourName VARCHAR(60) NOT NULL,
                 reviews FLOAT,
@@ -25,7 +25,41 @@ export const initDB = async () =>{
                 duration INT NOT NULL
             );
         `);
-        //TODO: have to create other tables with specified relations
+        const userTable = await pool.query(`
+            CREATE TABLE IF NOT EXISTS users (
+                userID BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+                userName VARCHAR(60) UNIQUE NOT NULL,
+                userEmail VARCHAR(60) UNIQUE NOT NULL,
+                userPassword VARCHAR(60) NOT NULL,
+                created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+            );
+        `);
+        const destinationTable = await pool.query(`
+            CREATE TABLE IF NOT EXISTS destinations (
+                destinationID BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+                destinationName VARCHAR(60) UNIQUE NOT NULL,
+                description VARCHAR(120),
+                imageUrl VARCHAR(120) NOT NULL
+            );
+        `);
+        const hotelTable = await pool.query(`
+            CREATE TABLE IF NOT EXISTS hotels (
+                hotelID BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+                hotelName VARCHAR(60) UNIQUE NOT NULL,
+                description VARCHAR(120),
+                imageUrl VARCHAR(120) NOT NULL
+            );
+        `);
+        const adminTable = await pool.query(`
+            CREATE TABLE IF NOT EXISTS admins (
+                adminID BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+                adminName VARCHAR(60) UNIQUE NOT NULL,
+                adminPassword VARCHAR(60) NOT NULL,
+                adminEmail VARCHAR(60) NOT NULL,
+                created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+            );
+        `);
+        //TODO: connect tables using relations. 
         return {
             data: schema,
             error: null
@@ -40,8 +74,7 @@ export const initDB = async () =>{
 
 export const registerUser = async (userName, userEmail, userPassword) =>{
     try{
-        const [ userExist ] = await pool.query(`SELECT * FROM users WHERE userName = ?`, [ userName ]);
-        console.log(userExist);
+        const [ userExist ] = await pool.query(`SELECT * FROM users WHERE userName = ? OR userEmail = ? `, [ userName, userEmail ]);
         if(userExist.length !== 0){
             return {
                 user: null,
@@ -49,7 +82,6 @@ export const registerUser = async (userName, userEmail, userPassword) =>{
             };
         }
         const [ result ] = await pool.query(`INSERT INTO users (userName, userEmail, userPassword) VALUES ( ?, ?, ? );`, [ userName, userEmail, userPassword ]);
-        console.log(result);
         const { insertId } = result;
         const { user } = await getUser(insertId);
         return {
