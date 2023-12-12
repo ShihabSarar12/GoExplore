@@ -8,8 +8,8 @@ import {
     updateUserInfo,
     validateLogin,
     initDB
-} from './database.js';
-import { hashPassword } from './utilities.js';
+} from './app/database.js';
+import { hashPassword } from './app/utilities.js';
 
 const app = express();
 app.use(cors());
@@ -35,7 +35,7 @@ app.get('/users', async ( req, res ) =>{
 
 app.post('/users',async ( req, res ) =>{
     const { userName, userEmail, userPassword } = req.body;
-    if(!userName || !userPassword || !userPassword){
+    if(!userName || !userEmail || !userPassword){
         res.status(423).send('Please provide all the details');
         return;
     }

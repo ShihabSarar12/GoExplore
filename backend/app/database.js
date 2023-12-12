@@ -12,54 +12,8 @@ const pool = mysql.createPool({
 
 export const initDB = async () =>{
     try{
-        const database = await pool.query(`CREATE DATABASE IF NOT EXISTS tour_app;`);
         const [{ stateChanges }] = await pool.query(`USE tour_app`);
         const { schema } = stateChanges;
-        const tourTable = await pool.query(`
-            CREATE TABLE IF NOT EXISTS tours (
-                tourId BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
-                price FLOAT NOT NULL,
-                tourName VARCHAR(60) NOT NULL,
-                reviews FLOAT,
-                description VARCHAR(120),
-                duration INT NOT NULL
-            );
-        `);
-        const userTable = await pool.query(`
-            CREATE TABLE IF NOT EXISTS users (
-                userID BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
-                userName VARCHAR(60) UNIQUE NOT NULL,
-                userEmail VARCHAR(60) UNIQUE NOT NULL,
-                userPassword VARCHAR(60) NOT NULL,
-                created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-            );
-        `);
-        const destinationTable = await pool.query(`
-            CREATE TABLE IF NOT EXISTS destinations (
-                destinationID BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
-                destinationName VARCHAR(60) UNIQUE NOT NULL,
-                description VARCHAR(120),
-                imageUrl VARCHAR(120) NOT NULL
-            );
-        `);
-        const hotelTable = await pool.query(`
-            CREATE TABLE IF NOT EXISTS hotels (
-                hotelID BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
-                hotelName VARCHAR(60) UNIQUE NOT NULL,
-                description VARCHAR(120),
-                imageUrl VARCHAR(120) NOT NULL
-            );
-        `);
-        const adminTable = await pool.query(`
-            CREATE TABLE IF NOT EXISTS admins (
-                adminID BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
-                adminName VARCHAR(60) UNIQUE NOT NULL,
-                adminPassword VARCHAR(60) NOT NULL,
-                adminEmail VARCHAR(60) NOT NULL,
-                created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-            );
-        `);
-        //TODO: connect tables using relations. 
         return {
             data: schema,
             error: null
