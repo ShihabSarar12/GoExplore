@@ -6,6 +6,8 @@
     <title>GoExplore</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <script>
         tailwind.config = {
           theme: {
@@ -31,17 +33,76 @@
     </header>
     <!-- Navbar ends here -->
     <!-- Carousel starts here -->
-    <!-- <div>
-        <div>
-            <img src="" alt="">
-            <img src="" alt="">
-            <img src="" alt="">
+    <div class="container-fluid px-lg-4 mt-4">
+      <div class="swiper swiper-container mySwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <img src="images/carousel/1.png" class="w-100 d-block" />
+          </div>
+          <div class="swiper-slide">
+            <img src="images/carousel/2.png" class="w-100 d-block" />
+          </div>
+          <div class="swiper-slide">
+            <img src="images/carousel/3.png" class="w-100 d-block" />
+          </div>
+          <div class="swiper-slide">
+            <img src="images/carousel/4.png" class="w-100 d-block" />
+          </div>
+          <div class="swiper-slide">
+            <img src="images/carousel/5.png" class="w-100 d-block" />
+          </div>
+          <div class="swiper-slide">
+            <img src="images/carousel/6.png" class="w-100 d-block" />
+          </div>
         </div>
-        <div>
-            <button></button>
-            <button></button>
-        </div>
-    </div> -->
+        <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-d87f210e471047f3a4" aria-disabled="false"></div>
+      <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-d87f210e471047f3a4" aria-disabled="true"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
     <!-- Carousel ends here -->
+    <!-- Destination showcase starts here -->
+    <section class="w-screen h-screen flex justify-center items-center">
+      <div class="w-5/6 h-5/6 bg-blue-200 rounded-3xl overflow-hidden">
+        <div class="px-10 py-5">
+          <h1 class="text-2xl">Ready for your <span id="text_font" class="text-3xl font-semibold">Adventours?</span></h1>
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia, incidunt eius culpa repudiandae vero temporibus eveniet, odio molestias nobis consequatur ad deserunt? Officiis voluptatum commodi voluptates fugiat obcaecati laboriosam recusandae?</p>
+        </div>
+        <div class="bg-red-200 w-full h-full">
+          <!-- destination card starts here -->
+          <div class="w-28 h-16">
+            <img class="w-full h-full" src="https://avada.website/tour-operator/wp-content/uploads/sites/169/2022/06/maldives-tour.jpg" alt="">
+          </div>
+          <!-- destination card starts here -->
+        </div>
+      </div>
+    </section>
+    <!-- Destination showcase ends here -->
+    <script src="../scripts/home.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script>
+          var swiper = new Swiper(".mySwiper", {
+        spaceBetween: 30,
+        effect: "fade",
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+      });
+  
+      var swiper = new Swiper(".swiper-container", {
+        spaceBetween: 30,
+        effect: "fade",
+        loop: true,
+        autoplay: {
+          delay: 1500,
+          disableOnInteraction: false
+        }
+      });
+    </script>
 </body>
 </html>
