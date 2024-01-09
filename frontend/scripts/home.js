@@ -13,6 +13,7 @@ const slideImage = () =>{
 setInterval(() =>{
     if(counter >= 5){
         counter = 0;
+        slideImage();
         return;
     }
     counter++;
@@ -22,6 +23,7 @@ setInterval(() =>{
 document.getElementById('carousel_left').addEventListener('click', ()=>{
     if(counter <= 0){
         counter = 5;
+        slideImage();
         return;
     }
     counter--;
@@ -31,6 +33,7 @@ document.getElementById('carousel_left').addEventListener('click', ()=>{
 document.getElementById('carousel_right').addEventListener('click', ()=>{
     if(counter >= 5){
         counter = 0;
+        slideImage();
         return;
     }
     counter++;

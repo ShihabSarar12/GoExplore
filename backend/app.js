@@ -1,13 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 import {
-    getUsers,
-    getUser,
     registerUser,
-    deleteUser,
     updateUserInfo,
     validateLogin,
-    initDB
+    initDB,
+    getAll,
+    getSingle,
+    deleteSingle
 } from './app/database.js';
 import { hashPassword } from './app/utilities.js';
 
@@ -24,13 +24,14 @@ app.get('/', async ( req, res ) =>{
     res.status(200).send('database: ' + data);
 });
 
-app.get('/users', async ( req, res ) =>{
-    const { users, error } = await getUsers();
+app.get('/:entity', async ( req, res ) =>{
+    const { entity } = req.params;
+    const { data, error } = await getAll(entity);
     if(error){
-        res.status(500).send(error + ': Error Occurred while fetching users');
+        res.status(500).send(error + ': Error Occurred while fetching '+entity);
         return;
     }
-    res.status(200).send(users);
+    res.status(200).send(data);
 });
 
 app.post('/users',async ( req, res ) =>{
@@ -52,37 +53,39 @@ app.post('/users',async ( req, res ) =>{
     res.status(423).send('User already exists by this partial credentials!!');
 });
 
-app.get('/user/:id',async ( req, res ) =>{
-    const { id } = req.params;
+app.get('/:entity/:id',async ( req, res ) =>{
+    const { entity,id } = req.params;
     if(!parseInt(id)){
         res.status(423).send('Enter a valid id');
         return;
     }
-    const { user, error } = await getUser(id);
+    const entityID = `${entity.slice(0, -1)}ID`;
+    const { data, success, error } = await getSingle(entity, entityID, id);
     if(error){
         res.status(500).send(error + ': Error Occurred while Registering User');
         return;
     }
-    if(user){
-        res.status(200).send(user);
+    if(data && success){
+        res.status(200).send(data);
         return;
     }
-    res.status(423).send('User doesn\'t exist!!');
+    res.status(423).send('data doesn\'t exist!!');
 });
 
-app.delete('/user/:id', async ( req, res ) =>{
-    const { id } = req.params;
+app.delete('/:entity/:id', async ( req, res ) =>{
+    const { entity, id } = req.params;
     if(!parseInt(id)){
         res.status(423).send('Enter a valid id');
         return;
     }
-    const { success, error } = await deleteUser(id);
+    const entityID = `${entity.slice(0, -1)}ID`;
+    const { data, success, error } = await deleteSingle(entity, entityID, id);
     if(error){
-        res.status(500).send(error + ': Error Occurred while Deleting User');
+        res.status(500).send(error + ': Error Occurred while Deleting '+entity);
         return;
     }
-    if(success){
-        res.status(200).send('Deletion Successful!!');
+    if(success && data){
+        res.status(200).send(data);
         return;
     }
     res.status(423).send('Deletion Failed!!');

@@ -6,8 +6,6 @@
     <title>GoExplore</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../styles/style.css">
-    <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <script>
         tailwind.config = {
           theme: {
@@ -22,35 +20,35 @@
 </head>
 <body>
     <!-- Navbar starts here -->
-    <header class="p-2 flex rounded-2xl shadow-md sticky left-0 top-0 z-20 w-full h-16 bg-white">
+    <header class="p-2 flex rounded-2xl shadow-md sticky left-0 top-0 z-20 w-screen h-16 bg-white">
         <div class="w-full h-full flex justify-center items-center gap-3">
             <a class="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-100 px-2 py-1 rounded-lg active:bg-blue-200 cursor-pointer" href="">Home</a>
-            <a class="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-100 px-2 py-1 rounded-lg active:bg-blue-200 cursor-pointer"  href="">Tours</a>
+            <a class="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-100 px-2 py-1 rounded-lg active:bg-blue-200 cursor-pointer"  href="./tour.html">Tours</a>
             <span id="text_font" class="mx-8 text-3xl font-bold hover:scale-105 transition-all ease-in-out duration-300 cursor-pointer hover:shadow-md px-2 py-1 rounded-2xl">GoExplore</span>
-            <a class="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-100 px-2 py-1 rounded-lg active:bg-blue-200 cursor-pointer"  href="">Destinations</a>
+            <a class="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-100 px-2 py-1 rounded-lg active:bg-blue-200 cursor-pointer"  href="./destination.html">Destinations</a>
             <a class="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-100 px-2 py-1 rounded-lg active:bg-blue-200 cursor-pointer"  href="">Hotels</a>
         </div>
     </header>
     <!-- Navbar ends here -->
     <!-- Personal Carousel starts here -->
-    <div class="flex w-screen h-5/6 mt-4 justify-center items-center flex-col">
-      <div class="w-5/6 h-[500px] border-2 relative overflow-hidden">
-        <img src="images/carousel/1.png" class="w-full h-full absolute slides duration-1000" />
-        <img src="images/carousel/2.png" class="w-full h-full absolute slides duration-1000" />
-        <img src="images/carousel/3.png" class="w-full h-full absolute slides duration-1000" />
-        <img src="images/carousel/4.png" class="w-full h-full absolute slides duration-1000" />
-        <img src="images/carousel/5.png" class="w-full h-full absolute slides duration-1000" />
-        <img src="images/carousel/6.png" class="w-full h-full absolute slides duration-1000" />
+    <div class="rounded-2xl flex w-screen h-5/6 mt-4 justify-center items-center flex-col">
+      <div class="rounded-2xl w-5/6 h-[500px] border-2 relative overflow-hidden">
+        <img src="../assets/carousel/1.png" class="w-full h-full absolute slides duration-1000" />
+        <img src="../assets/carousel/2.png" class="w-full h-full absolute slides duration-1000" />
+        <img src="../assets/carousel/3.png" class="w-full h-full absolute slides duration-1000" />
+        <img src="../assets/carousel/4.png" class="w-full h-full absolute slides duration-1000" />
+        <img src="../assets/carousel/5.png" class="w-full h-full absolute slides duration-1000" />
+        <img src="../assets/carousel/6.png" class="w-full h-full absolute slides duration-1000" />
       </div>
       <div class="absolute z-10 flex justify-between w-5/6">
-        <button class="px-2 py-1 bg-slate-800 text-white ml-5" id="carousel_left"><</button>
-        <button class="px-2 py-1 bg-slate-800  text-white mr-5" id="carousel_right">></button>
+        <button class="px-2 py-1 bg-slate-800 text-white ml-5 rounded-2xl hover:bg-slate-700" id="carousel_left"><</button>
+        <button class="px-2 py-1 bg-slate-800  text-white mr-5 rounded-2xl hover:bg-slate-700" id="carousel_right">></button>
       </div>
     </div>
     <!-- Personal Carousel ends here -->
     <!-- Destination showcase starts here -->
-    <section class="w-screen h-screen flex justify-center items-center">
-      <div class="w-5/6 h-5/6 bg-blue-200 rounded-3xl overflow-hidden">
+    <section class="w-screen min-h-screen flex justify-center items-center">
+      <div class="w-5/6 h-5/6 bg-blue-200 rounded-2xl overflow-hidden mt-16">
         <div class="px-10 py-2">
           <h1 class="text-2xl">Ready for your <span id="text_font" class="text-3xl font-semibold">Adventours?</span></h1>
           <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia, incidunt eius culpa repudiandae vero temporibus eveniet, odio molestias nobis consequatur ad deserunt? Officiis voluptatum commodi voluptates fugiat obcaecati laboriosam recusandae?</p>
@@ -62,7 +60,7 @@
               <img class="w-full h-full" src="https://avada.website/tour-operator/wp-content/uploads/sites/169/2022/06/maldives-tour.jpg" alt="">
             </div>
             <div>
-              <h1 class="text-2xl font-semibold">Bandarban</h1>
+              <h1 class="text-2xl font-medium">Bandarban</h1>
               <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam, accusamus.</p>
             </div>
           </div>
@@ -71,6 +69,7 @@
       </div>
     </section>
     <!-- Destination showcase ends here -->
+    
     <script src="../scripts/home.js"></script>
 </body>
 </html>

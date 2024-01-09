@@ -50,57 +50,72 @@ export const registerUser = async (userName, userEmail, userPassword) =>{
     }
 }
 
-export const getUsers = async () =>{
+export const getAll = async (entity) =>{   
     try{
-        const [ result ] = await pool.query(`SELECT * FROM users;`);
+        const [ data ] = await pool.query(`SELECT * FROM ??;`,[ entity ]);
         return {
-            users: result,
+            data,
             error: null
-        };
-    } catch(error) {
-        return {
-            users: null,
-            error: error.code
         }
-    }
-}
-
-export const getUser = async (userId) =>{
-    try{
-        const [ result ] = await pool.query(`SELECT * FROM users WHERE userID = ?;`, [ userId ]);
-        if(result.length === 0){
-            return {
-                user: null,
-                error: null
-            };
-        }
-        return {
-            user: result[0],
-            error: null
-        };
     } catch(error){
         return {
-            user: null,
+            data: null,
             error: error.code
         }
     }
 }
 
-export const deleteUser = async (userId) =>{
+export const getSingle = async (entity, attribute, value) =>{
     try{
-        const [ { affectedRows } ] = await pool.query(`DELETE FROM users WHERE userID = ?;`, [ userId ]);
+        const [ data ] = await pool.query(`SELECT * FROM ?? WHERE ?? = ?;`, [ entity, attribute, value ]);
+        if(data.length === 0){
+            return {
+                data: null,
+                success: false,
+                error: null
+            }
+        }
+        return {
+            data: data[0],
+            success: true,
+            error: null
+        }
+    } catch(error){
+        return {
+            data: null,
+            success: false,
+            error: error.code
+        }
+    }
+}
+
+
+export const deleteSingle = async (entity, attribute, value) =>{
+    try{
+        const { data, error } = await getSingle(entity, attribute, value);
+        if(error){
+            return {
+                data: null,
+                success: false,
+                error
+            }
+        }
+        const [ { affectedRows } ] = await pool.query(`DELETE FROM ?? WHERE ?? = ?;`, [ entity, attribute, value ]);
         if(affectedRows > 0){
             return {
+                data,
                 success: true,
                 error: null
             };
         }
         return {
+            data: null,
             success: false,
             error: null
         };
     } catch(error){
         return {
+            data: null,
             success: false,
             error: error.code
         }
