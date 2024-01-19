@@ -25,7 +25,7 @@ const injectDestinations = async () =>{
                 </div>
             </div>
         `;
-    })
+    });
 }
 
 injectDestinations();

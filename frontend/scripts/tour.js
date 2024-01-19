@@ -28,7 +28,7 @@ const injectTours = async () =>{
                 </div>
             </div>
         `;
-    })
+    });
 }
 
 injectTours();
