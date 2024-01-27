@@ -7,7 +7,10 @@ import {
     initDB,
     getAll,
     getSingle,
-    deleteSingle
+    deleteSingle,
+    getTotalBookings,
+    getTotalUsers,
+    getTotalPrices
 } from './app/database.js';
 import { hashPassword } from './app/utilities.js';
 
@@ -22,6 +25,27 @@ app.get('/', async ( req, res ) =>{
         return;
     }
     res.status(200).send('database: ' + data);
+});
+
+app.get('/totalBookings', async (req, res) =>{
+    const totalBookings = await getTotalBookings();
+    res.status(200).json({
+        totalBookings
+    });
+});
+
+app.get('/totalUsers', async (req, res) =>{
+    const totalUsers = await getTotalUsers();
+    res.status(200).json({
+        totalUsers
+    });
+});
+
+app.get('/totalPrices', async (req, res) =>{
+    const totalPrices = await getTotalPrices();
+    res.status(200).json({
+        totalPrices
+    });
 });
 
 app.get('/:entity', async ( req, res ) =>{

@@ -133,8 +133,13 @@ b{
 
 aside {
     height: 100vh;
+}
 
-
+.detailsBtn{
+    background-color: #7380ec;
+    color: white;
+    border-radius: 1rem;
+    cursor: pointer;
 }
 
 aside .top{

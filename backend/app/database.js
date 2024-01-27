@@ -169,3 +169,33 @@ export const validateLogin = async (userName, loginPassword) =>{
         }
     }
 }
+
+export const getTotalBookings = async () => {
+    try {
+        const [[ result ]] = await pool.query(`SELECT COUNT(bookingID) as totalBookings FROM bookings;`);
+        return result.totalBookings;
+    } catch (error) {
+        console.error('Error fetching total bookings count:', error);
+        return null;
+    } 
+}
+
+export const getTotalUsers = async () => {
+    try {
+        const [[result]] = await pool.query(`SELECT COUNT(userID) as totalUsers FROM users;`);
+        return result.totalUsers;
+    } catch (error) {
+        console.error('Error fetching  totalUsers count:', error);
+        return null;
+    } 
+}
+
+export const getTotalPrices = async () => {
+    try {
+        const [result] = await pool.query(`SELECT sum(price) as totalPrices from tours where tourId in (select tourId from bookings);`);
+        return result[0].totalPrices;
+    } catch (error) {
+        console.error('Error fetching  totalPrices count:', error);
+        return null;
+    } 
+}
