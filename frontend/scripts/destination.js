@@ -1,4 +1,5 @@
 const destinationsDiv = document.getElementById('destinations');
+const searchInput = document.getElementById('search');
 
 const fetchDestinations = async () =>{
     try{
@@ -12,20 +13,31 @@ const fetchDestinations = async () =>{
 
 const injectDestinations = async () =>{
     const destinations = await fetchDestinations();
-    destinations.map((destination,index) =>{
+    const searchQuery = search.value.toLowerCase();
+    destinationsDiv.innerHTML = '';
+    destinations.forEach((destination, index) => {
         const { destinationName, description, imageUrl } = destination;
-        destinationsDiv.innerHTML += `
-            <div class="bg-blue-100 w-64 h-72 rounded-2xl flex justify-between flex-col p-6">
-                <div class="w-full h-4/6 mb-4">
-                    <img src=${imageUrl} class="w-full h-full rounded-2xl"/>
-                </div>
-                <div>
-                    <h1>${destinationName}</h1>
-                    <p>${description}</p>
-                </div>
-            </div>
-        `;
-    });
-}
+        const isVisible =
+            destinationName.toLowerCase().includes(searchQuery) ||
+            description.toLowerCase().includes(searchQuery);
 
+        if (isVisible) {
+            destinationsDiv.innerHTML += `
+                <div class="bg-blue-100 w-64 h-72 rounded-2xl flex justify-between flex-col p-6">
+                    <div class="w-full h-4/6 mb-4">
+                        <img src=${imageUrl} class="w-full h-full rounded-2xl"/>
+                    </div>
+                    <div>
+                        <h1>${destinationName}</h1>
+                        <p>${description}</p>
+                    </div>
+                </div>
+            `;
+        }
+    });
+};
+search.addEventListener('input', injectDestinations);
+
+// Initial call to load destinations
+ 
 injectDestinations();

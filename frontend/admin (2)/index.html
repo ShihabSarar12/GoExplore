@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Panel</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2 style="color: aliceblue;">Admin Panel</h2>
+            <ul>
+                <li><a href="#" onclick="showDashboard()">Dashboard</a></li>
+                <li><a href="#" onclick="showDestination()">Destination</a></li>
+                <li><a href="#" onclick="showTour()">Tour</a></li>
+                <li><a href="#" onclick="showuser()">User</a></li>
+                <li><a href="#" onclick="showbooking()">Booking</a></li>
+            </ul>
+        </div>
+
+        <!-- Content -->
+        <!-- Content -->
+        <div class="content" id="dashboard">
+            <h2>Dashboard</h2>
+
+            <!-- 1st Row -->
+            <div class="dashboard-row">
+                <!-- Dashboard Item 1 -->
+                <div class="dashboard-item">
+                    <h3>Total Users</h3>
+                    <p id="total_user">44</p>
+                </div>
+
+                <!-- Dashboard Item 2 -->
+                <div class="dashboard-item">
+                    <h3>Total Booking</h3>
+                    <p id="total_booking">24</p>
+                </div>
+
+                <!-- Dashboard Item 3 -->
+                <div class="dashboard-item">
+                    <h3>Total Income</h3>
+                    <p id="total_income"></p>
+                </div>
+            </div>
+
+            <!-- 2nd Row -->
+            <div class="dashboard-row">
+                <!-- Single div for the 2nd row content -->
+                <div class="dashboard-item">
+                    <table id="messageTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John</td>
+                                <td>Hi there!</td>
+                            </tr>
+                            <tr>
+                                <td>Alice</td>
+                                <td>Hello, how are you?</td>
+                            </tr>
+                            <tr>
+                                <td>Bob</td>
+                                <td>This is a sample message.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- destination -->
+        <!-- destination -->
+        <div class="content" id="destination" style="display: none;">
+            <h2>Destination Page</h2>
+
+            <table class="destination-table">
+                <thead>
+                    <tr>
+                        <th>Destination ID</th>
+                        <th>Destination Name</th>
+                        <th>Description</th>
+                        <th>Image URL</th>
+                        <th>Tour ID</th>
+                        <th class="primary">Details</th>
+                        <th class="primary">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="destination-table-body">
+                    <!-- Data will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- tour -->
+        <!-- tour -->
+        <div class="content" id="tour" style="display: none;">
+            <h2>Tour Page</h2>
+
+            <table class="tour-table">
+                <thead>
+                    <tr>
+                        <th>Tour ID</th>
+                        <th>Price</th>
+                        <th>Tour Name</th>
+                        <th>Review</th>
+                        <th>Description</th>
+                        <th>Duration</th>
+                        <th>Image</th>
+                        <th class="primary">Details</th>
+                        <th class="primary">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tour-table-body">
+                    <!-- Data will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- booking -->
+
+        <div class="content" id="booking" style="display: none;">
+            <h2>Booking Page</h2>
+
+            <table class="booking-table">
+                <thead class="booking-table-header">
+                    <tr>
+                        <th >Booking ID</th>
+                        <th>No of People</th>
+                        <th>Booked</th>
+                        <th>Tour ID</th>
+                        <th>User ID</th>
+                        <th>Details User</th>
+                    </tr>
+                </thead>
+                <tbody class="booking-table-body">
+                    <!-- Data will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+        <!-- user -->
+        <!-- Assuming you have a user table on your page -->
+        <!-- user -->
+<div class="content" id="user" style="display: none;">
+    <h2>User Page</h2>
+
+    <table class="user-table">
+        <thead class="user-table-header">
+            <tr>
+                <th >User ID</th>
+                <th> User Name</th>
+                <th>User Email</th>
+                <th >User Password</th>
+                <th >Created</th>
+                <th class="primary">Action</th>
+            </tr>
+        </thead>
+        <tbody class="user-table-body">
+            <!-- Data will be dynamically inserted here -->
+        </tbody>
+    </table>
+</div>
+
+
+        <script src="script.js"></script>
+    </body>
+</html>
