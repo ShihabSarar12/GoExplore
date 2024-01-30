@@ -1,5 +1,15 @@
+if(!localStorage.getItem('user')){
+    location.replace('http://127.0.0.1:5500/frontend/pages/index.html');
+}
+
 const slides = document.querySelectorAll('.slides');
 const toursElement = document.querySelector('#tours');
+const logoutBtn = document.querySelector('#logout');
+
+logoutBtn.addEventListener('click', () =>{
+    localStorage.removeItem('user');
+    location.reload();
+})
 let counter = 0;
 
 const injectTourCards = async () =>{

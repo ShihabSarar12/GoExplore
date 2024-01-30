@@ -109,7 +109,9 @@ app.delete('/:entity/:id', async ( req, res ) =>{
         return;
     }
     if(success && data){
-        res.status(200).send(data);
+        res.status(200).json({
+            data
+        });
         return;
     }
     res.status(423).send('Deletion Failed!!');
@@ -138,13 +140,14 @@ app.patch('/user/:id', async ( req, res ) =>{
     res.status(423).send('Update failed!!');
 });
 
-app.post('/user/login', async ( req, res ) =>{
+app.post('/:entity/login', async ( req, res ) =>{
+    const { entity } = req.params;
     const { userName, userPassword } = req.body;
     if(!userName || !userPassword){
         res.status(423).send('Please provide all the details');
         return;
     }
-    const { user, validate, error } = await validateLogin(userName, userPassword);
+    const { user, validate, error } = await validateLogin(entity, userName, userPassword);
     if(error){
         res.status(500).send(error + ': Error Occurred while Logging In');
         return;
@@ -154,7 +157,10 @@ app.post('/user/login', async ( req, res ) =>{
         return;
     }
     if(validate){
-        res.status(200).send('Welcome ' + user.userName);
+        res.status(200).json({
+            message : "Logged in Successfully",
+            user
+        });
         return;
     }
     res.status(423).send('Password doesn\'t match!!');

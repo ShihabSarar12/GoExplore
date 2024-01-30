@@ -143,9 +143,9 @@ export const updateUserInfo = async (userId, userName, userEmail, userPassword) 
     }
 }
 
-export const validateLogin = async (userName, loginPassword) =>{
+export const validateLogin = async (entity, userName, loginPassword) =>{
     try{
-        const [ result ] = await pool.query(`SELECT * FROM users WHERE userName = ?;`, [ userName ]);
+        const [ result ] = await pool.query(`SELECT * FROM ?? WHERE userName = ?;`, [ entity, userName ]);
         if(result.length === 0){
             return {
                 user: null,
@@ -197,5 +197,5 @@ export const getTotalPrices = async () => {
     } catch (error) {
         console.error('Error fetching  totalPrices count:', error);
         return null;
-    } 
+    }
 }
