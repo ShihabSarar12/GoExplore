@@ -3,7 +3,14 @@ if(!localStorage.getItem('admin')){
 }
 const dateDiv = document.querySelector('#update-date');
 const adminDiv = document.querySelector('#admin');
+const themeToggler =document.querySelector(".theme-toggler");
+themeToggler.addEventListener('click', () => {
+    document.body.classList.toggle('dark-theme-variables'); 
 
+    themeToggler.querySelector('span:nth-child(1)').classList.toggle('active');
+    themeToggler.querySelector('span:nth-child(2)').classList.toggle('active');
+
+});
 let adminUser = localStorage.getItem('admin');
 adminUser = JSON.parse(adminUser);
 adminDiv.textContent = adminUser.adminName;

@@ -2,6 +2,14 @@ if(!localStorage.getItem('admin')){
     location.replace('http://127.0.0.1:5500/frontend/admin/login.html');
 }
 const adminDiv = document.querySelector('#admin');
+const themeToggler =document.querySelector(".theme-toggler");
+themeToggler.addEventListener('click', () => {
+    document.body.classList.toggle('dark-theme-variables'); 
+
+    themeToggler.querySelector('span:nth-child(1)').classList.toggle('active');
+    themeToggler.querySelector('span:nth-child(2)').classList.toggle('active');
+
+});
 
 async function addTour() {
     try {
