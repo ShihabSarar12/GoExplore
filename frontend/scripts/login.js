@@ -11,7 +11,6 @@ document.getElementById('login_btn').addEventListener('click',async () =>{
             userPassword
         })
     });
-    console.log(response);
     if(!response.ok){
         alert('Error validating');
         return;

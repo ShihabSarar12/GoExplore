@@ -39,19 +39,11 @@
                <span class="material-symbols-outlined">receipt_long</span>
                <h3>Destinations</h3>
             </a>
-            <a href="#">
+            <a href="./users.html">
                <span class="material-symbols-outlined">insights</span>
                <h3>Users</h3>
             </a>
-            <a href="#">
-               <span class="material-symbols-outlined">mail_outline</span>
-               <h3>Messages</h3>
-               <span class="message-count">26</span>
-            </a>
-            <a href="#">
-               <span class="material-symbols-outlined">inventory</span>
-               <h3>Hotels</h3>
-            <a href="#">
+            <a href="./logout.html">
                <span class="material-symbols-outlined">logout</span>
                <h3>Logout</h3>
             </a>
@@ -64,6 +56,28 @@
          <div class="date">
             <h3 id="update-date">2023-01-12</h3>
          </div>
+         <h3>Add New Tour</h3>
+         <form id="addTourForm">
+             <label for="tourName">Tour Name:</label>
+             <input type="text" id="tourName" name="tourName" required>
+        
+             <label for="tourDescription">Description:</label>
+             <input type="text" id="tourDescription" name="tourDescription" required>
+        
+             <label for="tourImageUrl">Image URL:</label>
+             <input type="text" id="tourImageUrl" name="tourImageUrl" required>
+        
+             <label for="tourPrice">Price:</label>
+             <input type="number" id="tourPrice" name="tourPrice" required>
+        
+             <label for="tourReviews">Reviews:</label>
+             <input type="number" id="tourReviews" name="tourReviews" required>
+        
+             <label for="tourDuration">Duration:</label>
+             <input type="text" id="tourDuration" name="tourDuration" required>
+        
+             <button type="button" onclick="addTour()">Add Tour</button>
+         </form>
          <div class="recent-orders">
             <h2>All Tours</h2>
             <table>
@@ -73,7 +87,6 @@
                      <th>Price</th>
                      <th>Description</th>
                      <th>Duration</th>
-                     <th>Actions</th>
                   </tr>
                </thead>
                <tbody>
@@ -102,7 +115,7 @@
          </div>
          <div class="profile">
             <div class="info">
-               <p>Hey,<b>Daniel</b></p>
+               <p>Hey,<b id="admin">Daniel</b></p>
                <small class="text-muted">Admin</small>
             </div>
             <div class="profile-photo">

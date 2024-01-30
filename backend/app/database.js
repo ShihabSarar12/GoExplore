@@ -26,30 +26,6 @@ export const initDB = async () =>{
     }
 }
 
-export const registerUser = async (userName, userEmail, userPassword) =>{
-    try{
-        const [ userExist ] = await pool.query(`SELECT * FROM users WHERE userName = ? OR userEmail = ? `, [ userName, userEmail ]);
-        if(userExist.length !== 0){
-            return {
-                user: null,
-                error: null
-            };
-        }
-        const [ result ] = await pool.query(`INSERT INTO users (userName, userEmail, userPassword) VALUES ( ?, ?, ? );`, [ userName, userEmail, userPassword ]);
-        const { insertId } = result;
-        const { user } = await getUser(insertId);
-        return {
-            user,
-            error: null
-        };
-    } catch(error) {
-        return {
-            user: null,
-            error: error.code
-        }
-    }
-}
-
 export const getAll = async (entity) =>{   
     try{
         const [ data ] = await pool.query(`SELECT * FROM ??;`,[ entity ]);
@@ -89,6 +65,30 @@ export const getSingle = async (entity, attribute, value) =>{
     }
 }
 
+export const registerUser = async (userName, userEmail, userPassword) =>{
+    try{
+        const [ userExist ] = await pool.query(`SELECT * FROM users WHERE userName = ? OR userEmail = ? `, [ userName, userEmail ]);
+        if(userExist.length !== 0){
+            return {
+                user: null,
+                error: null
+            };
+        }
+        const [ result ] = await pool.query(`INSERT INTO users (userName, userEmail, userPassword) VALUES ( ?, ?, ? );`, [ userName, userEmail, userPassword ]);
+        const { insertId } = result;
+        const { user } = await getSingle(insertId);
+        return {
+            user,
+            error: null
+        };
+    } catch(error) {
+        return {
+            user: null,
+            error: error.code
+        }
+    }
+}
+
 
 export const deleteSingle = async (entity, attribute, value) =>{
     try{
@@ -114,6 +114,7 @@ export const deleteSingle = async (entity, attribute, value) =>{
             error: null
         };
     } catch(error){
+        console.log(error);
         return {
             data: null,
             success: false,
@@ -143,9 +144,30 @@ export const updateUserInfo = async (userId, userName, userEmail, userPassword) 
     }
 }
 
-export const validateLogin = async (entity, userName, loginPassword) =>{
+export const updateTour = async (tourId, price, tourName, reviews, description, duration, imageUrl) =>{
     try{
-        const [ result ] = await pool.query(`SELECT * FROM ?? WHERE userName = ?;`, [ entity, userName ]);
+        const [ { affectedRows } ] = await pool.query(`UPDATE tours SET price = ?, tourName = ?, reviews = ?, description = ?,duration = ?, imageUrl = ? WHERE tourId = ?`, [ price, tourName, reviews, description, duration, imageUrl, tourId ]);
+        if(affectedRows > 0){
+            return {
+                success: true,
+                error: null
+            };
+        }
+        return {
+            success: false,
+            error: null
+        }
+    } catch(error){
+        return {
+            success: false,
+            error: error.code
+        }
+    }
+}
+
+export const validateLogin = async (userName, loginPassword) =>{
+    try{
+        const [ result ] = await pool.query(`SELECT * FROM users WHERE userName = ?;`, [ userName ]);
         if(result.length === 0){
             return {
                 user: null,
@@ -169,6 +191,39 @@ export const validateLogin = async (entity, userName, loginPassword) =>{
         }
     }
 }
+export const validateLoginAdmin = async (adminName, loginPassword) =>{
+    try{
+        const [ result ] = await pool.query(`SELECT * FROM admins WHERE adminName = ? AND adminPassword = ?;`, [ adminName, loginPassword ]);
+        if(result.length === 0){
+            return {
+                user: null,
+                validate: false,
+                error: null
+            };
+        }
+        const user = result[0];
+        if(user){
+            return {
+                user,
+                validate: true,
+                error: null
+            };
+        }
+        return {
+            user: null,
+            validate: false,
+            error: null
+        };
+    } catch(error){
+        return {
+            user: null,
+            validate: false,
+            error: error.code
+        }
+    }
+}
+
+
 
 export const getTotalBookings = async () => {
     try {
@@ -197,5 +252,55 @@ export const getTotalPrices = async () => {
     } catch (error) {
         console.error('Error fetching  totalPrices count:', error);
         return null;
+    }
+}
+
+export const addDestination = async (destName, destDescription, destImageUrl, destTourId) => {
+    try {
+        const [result] = await pool.query(
+            'INSERT INTO destinations (destinationName, description, imageUrl, tourId) VALUES (?, ?, ?, ?)',
+            [destName, destDescription, destImageUrl, destTourId]
+        );
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const addTour = async (tourName, tourDescription, tourImageUrl, price, reviews, duration) => {
+    try {
+        const [result] = await pool.query(
+            'INSERT INTO tours (tourName, description, imageUrl, price, reviews, duration) VALUES (?, ?, ?, ?, ?, ?)',
+            [tourName, tourDescription, tourImageUrl, price, reviews, duration]
+        );
+
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const addBookings = async (tourId, userId) =>{
+    try {
+        const [result] = await pool.query(
+            'INSERT INTO bookings (tourId, userId) VALUES (?, ?)',
+            [tourId, userId]
+        );
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const fetchBookings = async (userID) =>{
+    try {
+        const [result] = await pool.query(
+            'SELECT t.* FROM tours t JOIN bookings b ON t.tourId = b.tourId WHERE b.userID = ?;',
+            [userID]
+        );
+        return result;
+    } catch (error) {
+        console.log(error);
     }
 }

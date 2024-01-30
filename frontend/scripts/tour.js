@@ -50,16 +50,4 @@ const injectTours = async () => {
 search.addEventListener('input', injectTours);
 injectTours();
 
-const stars = document.querySelectorAll(".stars i");
 
-let review = 0;
-stars.forEach((star, index1) => {
-  star.addEventListener("click", () => {
-    stars.forEach((star, index2) => {
-      index1 >= index2 ? star.classList.add("active") : star.classList.remove("active");
-    });
-    review = index1 + 1;
-    //TODO update review here in a function
-
-  });
-});

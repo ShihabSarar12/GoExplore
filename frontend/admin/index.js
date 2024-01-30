@@ -1,3 +1,7 @@
+if(!localStorage.getItem('admin')){
+    location.replace('http://127.0.0.1:5500/frontend/admin/login.html');
+}
+
 const sideMenu = document.querySelector("aside");
 const menuBtn = document.querySelector("#menu-btn");
 const closeBtn = document.querySelector("#close-btn");
@@ -6,13 +10,16 @@ const dateDiv = document.querySelector('#update-date');
 const totalBookingsDiv = document.querySelector('#totalBookings');
 const totalUsersDiv = document.querySelector('#totalUsers');
 const totalIncomeDiv = document.querySelector('#totalIncome');
+const adminDiv = document.querySelector('#admin');
 
+let adminUser = localStorage.getItem('admin');
+adminUser = JSON.parse(adminUser);
+adminDiv.textContent = adminUser.adminName;
 const date = new Date();
 dateDiv.textContent = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
 menuBtn.addEventListener('click', () => {
    sideMenu.style.display = 'block';
-
 })
 closeBtn.addEventListener('click', () => {
     sideMenu.style.display ='none';
@@ -24,7 +31,6 @@ themeToggler.addEventListener('click', () => {
     themeToggler.querySelector('span:nth-child(2)').classList.toggle('active');
 
 });
-//FIXME tour deletion problem
 const fetchTours = async () =>{
     try{
         const response = await fetch(`http://localhost:8080/tours`);
@@ -38,24 +44,6 @@ const fetchTours = async () =>{
     }
 }
 
-// const deleteTour = async (id) =>{
-//     try {
-//         const response = await fetch(`http://localhost:8080/destinations/${id}`, {
-//             method: 'DELETE',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//         });
-//         if (!response.ok) {
-//             throw new Error('Error deleting destination');
-//         }
-//         const data = await response.json();
-//         return data;
-//     } catch (error) {
-//         console.error('Error deleting destination:', error);
-//     }
-// }
-
 const injectTours = async () =>{
     const tours = await fetchTours();
 
@@ -66,11 +54,6 @@ const injectTours = async () =>{
         <td>${tour.price}</td>
         <td>${tour.description}</td>
         <td>${tour.duration}</td>
-        <td>
-            <div class="flex justify-between w-full h-full">
-                <button onclick="deleteTour(tour.tourId)"><i class="fa fa-close"></i></button>
-            </div>
-        </td>
         `;
         tr.innerHTML = trContent;
         document.querySelector('table tbody').appendChild(tr);

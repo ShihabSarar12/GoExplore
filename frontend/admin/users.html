@@ -35,15 +35,15 @@
                <span class="material-symbols-outlined">person_outline</span>
                <h3>Tours</h3>
             </a>
-            <a href="" class="active">
+            <a href="./destinations.html">
                <span class="material-symbols-outlined">receipt_long</span>
                <h3>Destinations</h3>
             </a>
-            <a href="./users.html">
+            <a href="#" class="active">
                <span class="material-symbols-outlined">insights</span>
                <h3>Users</h3>
             </a>
-            <a href="./login.html">
+            <a href="#">
                <span class="material-symbols-outlined">logout</span>
                <h3>Logout</h3>
             </a>
@@ -56,38 +56,17 @@
          <div class="date">
             <h3 id="update-date">2023-01-12</h3>
          </div>
-         <h3>Add New Destination</h3>
-         <form id="addDestinationForm">
-             <label for="destName">Destination Name:</label>
-             <input type="text" id="destName" name="destName"
-                 required>
-
-             <label for="destDescription">Description:</label>
-             <input type="text" id="destDescription"
-                 name="destDescription" required>
-
-             <label for="destImageUrl">Image URL:</label>
-             <input type="text" id="destImageUrl" name="destImageUrl"
-                 required>
-
-             <label for="destTourId">Tour ID:</label>
-             <input type="number" id="destTourId" name="destTourId"
-                 required>
-
-             <button type="button" onclick="addDestination()">Add
-                 Destination</button>
-         </form>
          <div class="recent-orders">
-            <h2>All Destinations</h2>
+            <h2>All Users</h2>
             <table>
                <thead>
                   <tr>
-                     <th>Destinations Name</th>
-                     <th>Description</th>
-                     <th>Actions</th>
+                     <th>User Name</th>
+                     <th>User Email</th>
+                     <th>Created</th>
                   </tr>
                </thead>
-               <tbody id="destinations">
+               <tbody>
                </tbody>
             </table>
          </div>
@@ -123,7 +102,7 @@
         </div>
      </div>
    </div>
-    <script src="./destinations.js"></script>
+    <script src="./users.js"></script>
 </body>
 
 </html>

@@ -1,3 +1,40 @@
+if(!localStorage.getItem('admin')){
+    location.replace('http://127.0.0.1:5500/frontend/admin/login.html');
+}
+const dateDiv = document.querySelector('#update-date');
+const adminDiv = document.querySelector('#admin');
+
+let adminUser = localStorage.getItem('admin');
+adminUser = JSON.parse(adminUser);
+adminDiv.textContent = adminUser.adminName;
+const date = new Date();
+dateDiv.textContent = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+const addDestination = async () =>{
+    try {
+        const destName = document.getElementById('destName').value;
+        const destDescription = document.getElementById('destDescription').value;
+        const destImageUrl = document.getElementById('destImageUrl').value;
+        const destTourId = document.getElementById('destTourId').value;
+        const response = await fetch('http://localhost:8080/addDestination', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                destName,
+                destDescription,
+                destImageUrl,
+                destTourId,
+            }),
+        });
+        if (!response.ok) {
+            throw new Error('Error adding destination');
+        }
+        location.reload();
+    } catch (error) {
+        console.error('Error adding destination:', error);
+    }
+}
 const deleteDestinations = async (id) =>{
     try{
         const response = await fetch(`http://localhost:8080/destinations/${id}`,{

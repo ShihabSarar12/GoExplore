@@ -1,22 +1,51 @@
-//FIXME tous deletion problem
-const deleteTour = async (id) =>{
-    try{
-        const response = await fetch(`http://localhost:8080/tours/${id}`,{
-            method: 'DELETE',
+if(!localStorage.getItem('admin')){
+    location.replace('http://127.0.0.1:5500/frontend/admin/login.html');
+}
+const adminDiv = document.querySelector('#admin');
+
+async function addTour() {
+    try {
+        const tourName = document.getElementById('tourName').value;
+        const tourDescription = document.getElementById('tourDescription').value;
+        const tourImageUrl = document.getElementById('tourImageUrl').value;
+        const tourPrice = document.getElementById('tourPrice').value;
+        const tourReviews = document.getElementById('tourReviews').value;
+        const tourDuration = document.getElementById('tourDuration').value;
+
+        const response = await fetch('http://localhost:8080/addTour', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body: JSON.stringify({
+                tourName,
+                tourDescription,
+                tourImageUrl,
+                price: tourPrice,
+                reviews: tourReviews,
+                duration: tourDuration,
+            }),
         });
-        if(!response.ok){
-            throw new Error('Error fetching tours');
+
+        if (!response.ok) {
+            throw new Error('Error adding tour');
         }
-        const data = await response.json();
+
+        const result = await response.json();
+        console.log(result); 
         location.reload();
-        return data;
-    } catch(error){
-        console.error(error);
+    } catch (error) {
+        console.error('Error adding tour:', error);
     }
 }
+
+let adminUser = localStorage.getItem('admin');
+adminUser = JSON.parse(adminUser);
+adminDiv.textContent = adminUser.adminName;
+const dateDiv = document.querySelector('#update-date');
+const date = new Date();
+dateDiv.textContent = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+
 const fetchTours = async () =>{
     try{
         const response = await fetch(`http://localhost:8080/tours`);
@@ -39,11 +68,6 @@ const injectTours = async () =>{
         <td>${tour.price}</td>
         <td>${tour.description}</td>
         <td>${tour.duration}</td>
-        <td>
-            <div class="flex justify-between w-full h-full">
-                <button onclick="deleteTour(${tour.tourId})"><i class="fa fa-close"></i></button>
-            </div>
-        </td>
         `;
         tr.innerHTML = trContent;
         document.querySelector('table tbody').appendChild(tr);

@@ -10,7 +10,13 @@ import {
     deleteSingle,
     getTotalBookings,
     getTotalUsers,
-    getTotalPrices
+    getTotalPrices,
+    validateLoginAdmin,
+    addDestination,
+    addTour,
+    addBookings,
+    fetchBookings,
+    updateTour
 } from './app/database.js';
 import { hashPassword } from './app/utilities.js';
 
@@ -102,7 +108,7 @@ app.delete('/:entity/:id', async ( req, res ) =>{
         res.status(423).send('Enter a valid id');
         return;
     }
-    const entityID = `${entity.slice(0, -1)}ID`;
+    const entityID = `${entity.slice(0, -1)}Id`;
     const { data, success, error } = await deleteSingle(entity, entityID, id);
     if(error){
         res.status(500).send(error + ': Error Occurred while Deleting '+entity);
@@ -140,14 +146,36 @@ app.patch('/user/:id', async ( req, res ) =>{
     res.status(423).send('Update failed!!');
 });
 
-app.post('/:entity/login', async ( req, res ) =>{
-    const { entity } = req.params;
+app.patch('/tours/:id', async ( req, res ) =>{
+    const { id } = req.params;
+    if(!parseInt(id)){
+        res.status(423).send('Enter a valid id');
+        return;
+    }
+    const { price, tourName, reviews, description, duration, imageUrl } = req.body;
+    if(!price|| !tourName|| !reviews|| !description|| !duration|| !imageUrl){
+        res.status(423).send('Please provide all the details');
+        return;
+    }
+    const { success, error } = await updateTour(id, price, tourName, reviews, description, duration, imageUrl);
+    if(error){
+        res.status(500).send(error + ': Error Occurred while Updating User Info');
+        return;
+    }
+    if(success){
+        res.status(200).send('Update successful!!');
+        return;
+    }
+    res.status(423).send('Update failed!!');
+});
+
+app.post('/users/login', async ( req, res ) =>{
     const { userName, userPassword } = req.body;
     if(!userName || !userPassword){
         res.status(423).send('Please provide all the details');
         return;
     }
-    const { user, validate, error } = await validateLogin(entity, userName, userPassword);
+    const { user, validate, error } = await validateLogin(userName, userPassword);
     if(error){
         res.status(500).send(error + ': Error Occurred while Logging In');
         return;
@@ -164,6 +192,69 @@ app.post('/:entity/login', async ( req, res ) =>{
         return;
     }
     res.status(423).send('Password doesn\'t match!!');
+});
+app.post('/admins/login', async ( req, res ) =>{
+    const { adminName, adminPassword } = req.body;
+    if(!adminName || !adminPassword){
+        res.status(423).send('Please provide all the details');
+        return;
+    }
+    const { user, validate, error } = await validateLoginAdmin(adminName, adminPassword);
+    if(error){
+        res.status(500).send(error + ': Error Occurred while Logging In');
+        return;
+    }
+    if(!user){
+        res.status(423).send('User doesn\'t exist!!');
+        return;
+    }
+    if(validate){
+        res.status(200).json({
+            message : "Logged in Successfully",
+            user
+        });
+        return;
+    }
+    res.status(423).send('Password doesn\'t match!!');
+});
+
+app.post('/addDestination', async (req, res) => {
+    const { destName, destDescription, destImageUrl, destTourId } = req.body;
+    try {
+        const result = await addDestination(destName, destDescription, destImageUrl, destTourId);
+        res.status(201).json({ message: 'Destination added successfully', destinationId: result.insertId });
+    } catch (error) {
+        res.status(500).json({ error: 'Unable to add destination' });
+    }
+});
+
+app.post('/addTour', async (req, res) => {
+    try {
+        const { tourName, tourDescription, tourImageUrl, price, reviews, duration } = req.body;
+        const result = await addTour(tourName, tourDescription, tourImageUrl, price, reviews, duration);
+        res.status(201).json({ message: 'Tour added successfully', tourId: result.insertId });
+    } catch (error) {
+        res.status(500).json({ error: 'Unable to add tour' });
+    }
+});
+app.post('/addBookings', async (req, res) => {
+    try {
+        const { tourId, userID } = req.body;
+        const result = await addBookings(tourId, userID);
+        res.status(201).json({ message: 'Booking added successfully', bookingId: result.insertId });
+    } catch (error) {
+        res.status(500).json({ error: 'Unable to add tour' });
+    }
+});
+
+app.post('/bookings', async (req, res) => {
+    try {
+        const { userID } = req.body;
+        const result = await fetchBookings(userID);
+        res.status(201).json({ result: result });
+    } catch (error) {
+        res.status(500).json({ error: 'Unable to get booking' });
+    }
 });
 
 app.listen(process.env.SERVER_PORT, () =>{

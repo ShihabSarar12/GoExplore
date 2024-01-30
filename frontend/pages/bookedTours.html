@@ -13,23 +13,14 @@
     <header class="p-2 flex rounded-2xl shadow-md sticky left-0 top-0 z-20 w-screen h-16 bg-white">
         <div class="w-full h-full flex justify-center items-center gap-3">
             <a class="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-100 px-2 py-1 rounded-lg active:bg-blue-200 cursor-pointer" href="./home.html">Home</a>
-            <a class="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-400 px-2 py-1 rounded-lg active:bg-blue-600 cursor-pointer bg-blue-500 text-white" href="">Tours</a>
+            <a class="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-100 px-2 py-1 rounded-lg active:bg-blue-200 cursor-pointer" href="./tour.html">Tours</a>
             <span id="text_font" class="mx-8 text-3xl font-bold hover:scale-105 transition-all ease-in-out duration-300 cursor-pointer hover:shadow-md px-2 py-1 rounded-2xl">GoExplore</span>
             <a class="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-100 px-2 py-1 rounded-lg active:bg-blue-200 cursor-pointer"  href="./destination.html">Destinations</a>
-            <a class="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-100 px-2 py-1 rounded-lg active:bg-blue-200 cursor-pointer"  href="./bookedTours.html">Booked</a>
+            <a class="transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-400 px-2 py-1 rounded-lg active:bg-blue-600 cursor-pointer bg-blue-500 text-white"  href="">Booked</a>
         </div>
     </header>
-    <!-- Navbar ends here -->
-    <div class="w-screen flex justify-center items-center mt-4">
-        <div class="w-5/6 h-10 gap-4 px-4">
-            <input class="h-full w-2/6 rounded-lg px-4 bg-slate-200" id="search" type="text" placeholder="Search" data-search>
-        </div>
+    <div class="w-screen h-screen grid grid-cols-4 gap-4 px-4" id="booked">
     </div>
-    <section class="w-screen h-screen flex items-center justify-center">
-        <div id="tours" class="w-5/6 h-screen p-5 grid grid-cols-4 gap-10">
-            <!-- code being injected here -->
-        </div>
-    </section>
-    <script src="../scripts/tour.js"></script>
+    <script src="../scripts/bookedTours.js"></script>
 </body>
 </html>
